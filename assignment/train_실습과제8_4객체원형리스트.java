@@ -1,4 +1,4 @@
-package Chap8_List;
+package assignment;
 
 /*
  * 정수 리스트 > 객체 리스트> 객체 원형 리스트 
@@ -15,8 +15,9 @@ class SimpleObject3 {
 
 	private String no; // 회원번호
 	private String name; // 이름
-	String expire;//  유효기간 필드를 추가
+	String expire;// 유효기간 필드를 추가
 	// --- 문자열 표현을 반환 ---//
+
 	public String toString() {
 		return "(" + no + ") " + name;
 	}
@@ -25,10 +26,12 @@ class SimpleObject3 {
 		this.no = no;
 		this.name = name;
 	}
+
 	public SimpleObject3() {// head node를 만들 때 사용
 		this.no = null;
 		this.name = null;
 	}
+
 	// --- 데이터를 읽어 들임 ---//
 	void scanData(String guide, int sw) {
 		Scanner sc = new Scanner(System.in);
@@ -73,10 +76,10 @@ class Node3 {
 	}
 }
 
-class CircularList {
+class CircularList2 {
 	Node3 first;
 
-	public CircularList() { //head node
+	public CircularList2() { // head node
 		SimpleObject3 data = new SimpleObject3();
 		first = new Node3(data);
 		first.link = first;
@@ -92,6 +95,44 @@ class CircularList {
 		Node3 q, current = first.link;
 		q = current;
 
+		// 하나도 없으면
+		if (current.link.equals(first)) {
+
+			return -1;
+		}
+
+		do {
+			// 같으면
+			if (cc.compare(current.data, element) == 0) {
+
+				// 처음이면
+				if (current.equals(first.link)) {
+					// 처음 전을 찾는다
+					do {
+						q = current;
+						current = current.link;
+					} while (!current.equals(first.link));
+
+					// 하나 밖에 없으면
+					if (q.link.equals(current.link)) {
+						first.link = first;
+						return 1;
+					}
+
+					q.link = current.link;
+					first.link = current.link;
+
+				}
+
+				q.link = current.link;
+
+				return 1;
+			}
+
+			q = current;
+			current = current.link;
+		} while (!current.equals(first.link));
+
 		return -1;// 삭제할 대상이 없다.
 	}
 
@@ -99,30 +140,182 @@ class CircularList {
 		Node3 p = first.link;
 		SimpleObject3 so;
 
+		if (p.link.equals(first)) {
+			System.out.println("리스트에  데이터가 없습니다.");
+			return;
+		}
+
+		do {
+			// 같으면
+			System.out.println(p.data);
+			p = p.link;
+		} while (!p.equals(first.link));
+
 	}
 
 	public void Add(SimpleObject3 element, Comparator<SimpleObject3> cc) // 임의 값을 삽입할 때 리스트가 오름차순으로 정렬이 되도록 한다
 	{
 		Node3 newNode = new Node3(element);
-	
+		Node3 p = first.link;
+		Node3 q = null;
+
+		if (p.link.equals(first)) {
+			newNode.link = newNode;
+
+			first.link = newNode;
+			return;
+		}
+
+		do {
+			if (cc.compare(p.data, newNode.data) >= 0) {
+				if (q == null) {
+					newNode.link = first.link;
+					first.link = newNode;
+					break;
+				}
+
+				newNode.link = p;
+				q.link = newNode;
+				break;
+			} else {
+				q = p;
+				p = p.link;
+
+				if (p.equals(first.link)) {
+					newNode.link = p;
+					q.link = newNode;
+				}
+			}
+		} while (!p.equals(first.link));
+
 	}
 
 	public boolean Search(SimpleObject3 element, Comparator<SimpleObject3> cc) { // 전체 리스트를 순서대로 출력한다.
 		Node3 q, current = first.link;
 
+		if (current.link.equals(first)) {
+
+			return false;
+		}
+
+		do {
+			// 같으면
+			if (cc.compare(current.data, element) == 0) {
+				return true;
+			}
+		} while (!current.equals(first.link));
+
 		return false;
 	}
+	
+	public Node3 lastNode()
+	{
+		Node3 p = first.link;
+		Node3 q = null;
+		do {
+			q = p;
+			p = p.link;
+		}while(!p.equals(first.link));
+			
+		return q;
+	}
+
 	void Merge(CircularList2 b, Comparator<SimpleObject3> cc) {
 		/*
-		 * 연결리스트 a,b에 대하여 a = a + b
-		 * merge하는 알고리즘 구현으로 in-place 방식으로 합병/이것은 새로운 노드를 만들지 않고 합병하는 알고리즘 구현
-		 * 난이도 등급: 최상급
-		 * 회원번호에 대하여 a = (3, 5, 7), b = (2,4,8,9)이면 a = (2,3,4,5,8,9)가 되도록 구현하는 코드
+		 * 연결리스트 a,b에 대하여 a = a + b merge하는 알고리즘 구현으로 in-place 방식으로 합병/이것은 새로운 노드를 만들지
+		 * 않고 합병하는 알고리즘 구현 난이도 등급: 최상급 회원번호에 대하여 a = (3, 5, 7), b = (2,4,8,9)이면 a =
+		 * (2,3,4,5,8,9)가 되도록 구현하는 코드
 		 */
+
+		Node3 lastA  = lastNode();
+		Node3 lastB = b.lastNode();
+		
+		Node3 qA = first.link;
+		Node3 pA = first.link;
+
+		Node3 qB = b.first.link;
+		Node3 pB = b.first.link;
+
+		Node3 pC = null;
+		
+
+		
+		
+		
+
+		// first link전 까지
+		while(true){
+	
+			if(qA.equals(lastA) || qB.equals(lastB)) {
+				break;
+			}
+			
+			// 왼쪽이 더 크면
+			if (cc.compare(pA.data, pB.data) >= 0) {
+
+				if (pC == null)
+					pC = pB;
+
+				// 한칸 이동ㅇ
+				qB = pB;
+				pB = pB.link;
+
+				// 이어주고
+				// 처음이 아니라면
+				if (!pB.equals(first.link)) {
+					// 어느쪽을 고를지
+					if (cc.compare(pA.data, pB.data) >= 0) {
+						qB.link = pB;
+					} else {
+						qB.link = pA;
+					}
+
+				} else {
+					qB.link = pA;
+				}
+
+			} else {
+
+				if (pC == null)
+					pC = pA;
+
+				qA = pA;
+				pA = pA.link;
+
+				// 이어주고
+				if (!pA.equals(first.link)) {
+					// 어느쪽을 고를지
+					if (cc.compare(pA.data, pB.data) >= 0) {
+						qA.link = pB;
+					} else {
+						qA.link = pA;
+					}
+
+				} else {
+					qA.link = pB;
+				}
+
+			}
+			
+			
+		}
+
+		first.link = pC;
+
+		if (!qA.equals(lastA)) {
+			qB.link = pA;
+		}
+
+		if (!qB.equals(lastB)) {
+			qA.link = pB;
+		}
+		
+		//마지막이 A의 첫번째를 가르켜야함
+		qB.link = first.link;
 	}
 }
 
-public class 실습9_4객체원형리스트 {
+public class train_실습과제8_4객체원형리스트 {
 	enum Menu {
 		Add("삽입"), Delete("삭제"), Show("인쇄"), Search("검색"), Merge("합병"), Exit("종료");
 
@@ -162,8 +355,8 @@ public class 실습9_4객체원형리스트 {
 
 	public static void main(String[] args) {
 		Menu menu; // 메뉴
-		CircularList l = new CircularList();
-		CircularList l2 = new CircularList();
+		CircularList2 l = new CircularList2();
+		CircularList2 l2 = new CircularList2();
 		Scanner sc = new Scanner(System.in);
 		SimpleObject3 data;
 		int count = 3;//l2 객체의 숫자를 3개로 한다 
@@ -197,13 +390,13 @@ public class 실습9_4객체원형리스트 {
 				for (int i = 0; i < count; i++) {//3개의 객체를 연속으로 입력받아 l2 객체를 만든다 
 					data = new SimpleObject3();
 					data.scanData("병합", 3);
-					l2.Add(data, SimpleObject5.NO_ORDER );				
+					l2.Add(data, SimpleObject3.NO_ORDER );				
 				}
 				System.out.println("리스트 l::");
 				l.Show();
 				System.out.println("리스트 l2::");
 				l2.Show();
-				l.Merge(l2, SimpleObject5.NO_ORDER);
+				l.Merge(l2, SimpleObject3.NO_ORDER);
 				//merge 실행후 show로 결과 확인 - 새로운 노드를 만들지 않고 합병 - 난이도 상
 				System.out.println("병합 리스트 l::");
 				l.Show();
