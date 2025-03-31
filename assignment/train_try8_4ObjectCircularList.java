@@ -145,11 +145,11 @@ class CircularList2 {
 			return;
 		}
 
-		do {
+		while (!p.equals(first)){
 			// 같으면
 			System.out.println(p.data);
 			p = p.link;
-		} while (!p.equals(first));
+		}
 
 	}
 
@@ -160,14 +160,14 @@ class CircularList2 {
 		Node3 q = null;
 
 		if (p.equals(first)) {
-			//첫 노드를 가르키게 만들어야함
+			// 첫 노드를 가르키게 만들어야함
 			newNode.link = first;
 
 			first.link = newNode;
 			return;
 		}
 
-		while (!p.equals(first)){
+		while (!p.equals(first)) {
 			if (cc.compare(p.data, newNode.data) >= 0) {
 				if (q == null) {
 					newNode.link = first.link;
@@ -205,18 +205,18 @@ class CircularList2 {
 				return true;
 			}
 			current = current.link;
-		} 
+		}
 
 		return false;
 	}
-	
+
 	void Merge(CircularList2 b, Comparator<SimpleObject3> cc) {
 		/*
 		 * 연결리스트 a,b에 대하여 a = a + b merge하는 알고리즘 구현으로 in-place 방식으로 합병/이것은 새로운 노드를 만들지
 		 * 않고 합병하는 알고리즘 구현 난이도 등급: 최상급 회원번호에 대하여 a = (3, 5, 7), b = (2,4,8,9)이면 a =
 		 * (2,3,4,5,8,9)가 되도록 구현하는 코드
 		 */
-		
+
 		Node3 qA = null;
 		Node3 pA = first.link;
 
@@ -224,18 +224,11 @@ class CircularList2 {
 		Node3 pB = b.first.link;
 
 		Node3 pC = null;
-		
-
-		
-		
-		
 
 		// 처음을 가르키면 마지막
-		while(!pA.equals(first) && !pB.equals(b.first)){
-	
-			
-			
+		while (!pA.equals(first) && !pB.equals(b.first)) {
 			// 왼쪽이 더 크면
+
 			if (cc.compare(pA.data, pB.data) >= 0) {
 
 				if (pC == null)
@@ -246,8 +239,7 @@ class CircularList2 {
 				pB = pB.link;
 
 				// 이어주고
-				// 처음이 아니라면
-				if (!pB.equals(first)) {
+				if (!pB.equals(b.first)) {
 					// 어느쪽을 고를지
 					if (cc.compare(pA.data, pB.data) >= 0) {
 						qB.link = pB;
@@ -268,6 +260,7 @@ class CircularList2 {
 				pA = pA.link;
 
 				// 이어주고
+				// 이어주고
 				if (!pA.equals(first)) {
 					// 어느쪽을 고를지
 					if (cc.compare(pA.data, pB.data) >= 0) {
@@ -281,24 +274,28 @@ class CircularList2 {
 				}
 
 			}
-			
-			
 		}
 
 		first.link = pC;
-		b.first.link = pC;
-		
+
+
 		if (!pA.equals(first)) {
 			qB.link = pA;
-		}else if (!pB.equals(first)) {
+		}
+		
+		if (!pB.equals(b.first)) {
 			qA.link = pB;
+
+			//pB.link = first;
+			while(!pB.equals(b.first)) {
+				qB = pB;
+				pB = pB.link;
+			}
+			//아 ㅠㅠㅠ 제발 이거 땜에 ㅠㅠ
 			
+			qB.link = first;
 		}
 
-		
-		
-		//마지막이 A의 첫번째를 가르켜야함
-		qB.link = first.link;
 	}
 }
 
@@ -346,7 +343,7 @@ public class train_try8_4ObjectCircularList {
 		CircularList2 l2 = new CircularList2();
 		Scanner sc = new Scanner(System.in);
 		SimpleObject3 data;
-		int count = 4;//l2 객체의 숫자를 4개로 한다 
+		int count = 4;// l2 객체의 숫자를 4개로 한다
 
 		do {
 			switch (menu = SelectMenu()) {
@@ -355,13 +352,13 @@ public class train_try8_4ObjectCircularList {
 				data.scanData("입력", 3);
 				l.Add(data, SimpleObject3.NO_ORDER);
 				break;
-			case Delete: // 
+			case Delete: //
 				data = new SimpleObject3();
 				data.scanData("삭제", SimpleObject3.NO);
 				int num = l.Delete(data, SimpleObject3.NO_ORDER);
 				System.out.println("삭제된 데이터 성공은 " + num);
 				break;
-			case Show: 
+			case Show:
 				l.Show();
 				break;
 			case Search: // 회원 번호 검색
@@ -374,17 +371,17 @@ public class train_try8_4ObjectCircularList {
 					System.out.println("검색 실패 = " + result);
 				break;
 			case Merge:
-				for (int i = 0; i < count; i++) {//3개의 객체를 연속으로 입력받아 l2 객체를 만든다 
+				for (int i = 0; i < count; i++) {// 3개의 객체를 연속으로 입력받아 l2 객체를 만든다
 					data = new SimpleObject3();
 					data.scanData("병합", 3);
-					l2.Add(data, SimpleObject3.NO_ORDER );				
+					l2.Add(data, SimpleObject3.NO_ORDER);
 				}
 				System.out.println("리스트 l::");
 				l.Show();
 				System.out.println("리스트 l2::");
 				l2.Show();
 				l.Merge(l2, SimpleObject3.NO_ORDER);
-				//merge 실행후 show로 결과 확인 - 새로운 노드를 만들지 않고 합병 - 난이도 상
+				// merge 실행후 show로 결과 확인 - 새로운 노드를 만들지 않고 합병 - 난이도 상
 				System.out.println("병합 리스트 l::");
 				l.Show();
 			case Exit: // 꼬리 노드 삭제
