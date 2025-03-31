@@ -38,11 +38,11 @@ public class train_실습4_4_스택응용_괄호매칭검사 {
     	
     	System.out.println(s);
     	
-    	for(int i = 0; i<s.length()-1;i++) {
+    	for(int i = 0; i<s.length();i++) {
     		//오른쪽이면
     		if(pairs.containsValue(s.charAt(i)))
     		{
-    			if(pairs.get(list.get(list.size()-1)) != s.charAt(i))
+    			if(pairs.get(list.get(list.size())) != s.charAt(i))
     			{
     				return false;
     			}else{

@@ -25,12 +25,36 @@ class LinkedList1 {
 	{
 		Node1 q, current = first;
 		q = current;
+		
+		while(current != null)
+		{
+			//존재한다면
+			if(element == current.data)
+			{
+				if(current == first)
+				{
+					first = current.link;
+				}
+				
+				q.link = current.link;
+				return true;
+			}
+			q = current; current = current.link;
+		}
+		
 		return false;
 	}
 
 	public void Show() { // 전체 리스트를 순서대로 출력한다.
 		Node1 p = first;
 		int num = 0;
+		
+		while(p != null)
+		{
+			System.out.print(p.data + ", ");
+			p = p.link;
+		}
+		System.out.println();
 
 	}
 
@@ -42,26 +66,46 @@ class LinkedList1 {
 			first = newNode;
 			return;
 		}
-		Node1 q = first, p = null;
-		while(p != null)
+		
+		Node1 p = first; Node1 q = null;
+		
+		while(p!=null)
 		{
-			if(element < p.data) {
-				newNode.link = p;
-				if(q != null) {
-					q.link = newNode;
-					return;
+			if(p.data > element)
+			{
+				//처음을 가르키고 있을때
+				if(q == null)
+				{
+					newNode.link = first;
+					first = newNode;
+					break;
 				}else {
+					newNode.link = p;
 					q.link = newNode;
+					break;
 				}
+			}else if(p.link == null){
+				//마지막이고 더 크다면
+				
+					 p.link = newNode;
+					 break;
+
 			}
-			q=p;
-			p=p.link;
+			q = p;
+			p = p.link;
 		}
 
 	}
 
 	public boolean Search(int data) { //전달된 data 값을 찾아 존재하면 true로 리턴, 없으면 false로 리턴
 		Node1 ptr = first;
+		
+		while(ptr != null)
+		{
+			if(ptr.data == data)
+				return true;
+			ptr = ptr.link;
+		}
 
 		return false;
 	}
@@ -72,6 +116,41 @@ class LinkedList1 {
 		 * 난이도 등급: 최상
 		 * a = (3, 5, 7), b = (2,4,8,9)이면 a = (2,3,4,5,8,9)가 되도록 구현하는 코드
 		 */
+		
+		Node1 pl = first;
+		Node1 ql = null;
+		
+		Node1 pr = b.first;
+		Node1 qr = null;
+		
+		//둘다 값이 있는 경우
+		while(pl != null && pr != null)
+		{
+			//왼쪽이 더 크면
+			if(pl.data > pr.data)
+			{
+				pr.link = pl;
+				if(ql != null)
+				{
+					pr.link = pl;
+					ql.link = pr;
+					
+				}else {
+					//ql이 Null이면 제일 앞이므로
+					pr.link = first;
+					first = pr;
+				}
+				
+			//왼쪽이 더 작으면
+			}else if(pl.data < pr.data)
+			{
+				
+			//왼쪽 오른쪽이 같으면
+			}else {
+				
+			}
+		}
+		
 
 	}
 }
@@ -132,6 +211,7 @@ public class try9_1IntegerList {
 			case Add: // 난수를 삽입하는데 올림차순으로 정렬되도록 구현
 				for (int i =0; i < count; i++) {
 					data = rand.nextInt(100);
+					System.out.println(data + ", ");
 					l.Add(data);
 				}
 				break;

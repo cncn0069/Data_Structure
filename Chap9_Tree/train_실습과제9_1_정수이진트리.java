@@ -21,6 +21,11 @@ class TreeNode5 {
 	public TreeNode5() {
 		LeftChild = RightChild = null;
 	}
+	
+	public TreeNode5(int x) {
+		LeftChild = RightChild = null;
+		data = x;
+	}
 }
 
 class ObjectStack5{
@@ -190,7 +195,9 @@ class Tree5 {
 	}
 
 	boolean isLeafNode(TreeNode5 current) {//current 가 leaf node 인지 조사 
-
+		if(current.LeftChild == null && current.RightChild == null)
+			return true;
+		return false;
 	}
 
 	void inorder() {//main에서 호출되는 driver function
@@ -272,6 +279,44 @@ class Tree5 {
 		TreeNode5 p = root;
 		TreeNode5 q = null;
 		
+		//p가 null인지 검사
+		
+		if(p == null) {
+			root = p;
+			return true;
+		}
+		
+		
+		while(p != null){
+			//작은지
+			if(p.data > x)
+			{
+				q = p;
+				p = p.LeftChild;
+			}else if(p.data < x) {
+				//큰지
+				q = p;
+				p = p.RightChild;
+			}else {
+				//같은지
+				return false;
+			}
+		}
+		
+		//목적지 도착
+		
+		p = new TreeNode5(x);
+		//큰지 작은지 확인해야함
+		if(q.data > x) {
+			//x가 q.data보다 작으므로 왼쪽
+			q.LeftChild = p;
+		}else {
+			//x가 q.data보다 크므로 오른쪽
+			q.RightChild = p;
+		}
+		
+		
+		return true;
 	}
 
 	boolean delete(int num) {//binary search tree에서 임의 값을 갖는 노드를 찾아 삭제한다.
@@ -280,6 +325,58 @@ class Tree5 {
 		TreeNode5 p = root, q = null, parent = null;
 		int branchMode = 0; // 1은 left, 2는 right
 		
+		//없는 경우
+		if(p == null)
+			return false;
+		
+		while(p != null)
+		{
+			//num이 작으면 왼쪽으로
+			if(p.data > num) {
+				q = p;
+				p = p.LeftChild;
+			}else if(p.data < num){
+				q = p;
+				p = p.RightChild;
+			}else {
+				//찾은경우
+				
+				
+				
+				//자식 노드가 없는경우
+				if(isLeafNode(p)) {
+					
+					//q가 null일때는...?
+					if(q == null) {
+						root = null;
+					}
+					
+					//q보다 작은경우
+					if(q.data > num) {
+						q.LeftChild = null;
+						return true;
+					}else {
+						q.RightChild = null;
+						return true;
+					}
+					
+					//q보다 큰경우
+					
+				}
+				//자식 노드가 하나인 경우
+				if(p.LeftChild == null ^ p.RightChild == null) {
+					if(q == null) {
+						//Left가 Null이 아닐때
+						root = root.RightChild;
+					}else {
+						root = root.LeftChild;
+					}
+				}
+				
+				//자식 노드가 두개인 경우
+
+			}
+		}
 		return false;
 
 	}
