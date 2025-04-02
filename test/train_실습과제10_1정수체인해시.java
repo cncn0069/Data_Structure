@@ -3,7 +3,7 @@
 //import java.util.Scanner;
 ////체인법에 의한 해시
 ////--- 해시를 구성하는 노드 ---//
-//
+///*
 //class Node {
 //    int key;                 // 키값
 //    Node next;        // 뒤쪽 포인터(뒤쪽 노드에 대한 참조)
@@ -36,7 +36,7 @@
 //
 // }
 //}
-//
+//*/
 //public class train_실습과제10_1정수체인해시 {
 //
 //	enum Menu {
@@ -79,7 +79,7 @@
 ////체인법에 의한 해시 사용 예
 // public static void main(String[] args) {
 //	 	Menu menu;
-//		SimpleChainHash hash = new SimpleChainHash(11);
+////		SimpleChainHash hash = new SimpleChainHash(11);
 //		Scanner stdIn = new Scanner(System.in);
 //		int select = 0, result = 0, val = 0;
 //		final int count = 15;
