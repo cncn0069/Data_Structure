@@ -11,17 +11,25 @@ class Graph2 {
     boolean[] visited;
 
     public Graph2(int vertices) {
-
+    	n = vertices;
+    	//매번 새로운 visited을 만들어야함
+    	//visited = new boolean[vertices]; 
+    	matrix = new int[vertices][vertices];
     }
 
     // Insert an edge into the graph
     public void insertEdge(int start, int end) {
-
+    	matrix[start][end] = 1;
     }
 
     // Display adjacency matrix
     public void displayMatrix() {
-
+    	for(int i = 0; i < matrix.length;i++) {
+    		for(int j = 0; j < matrix[0].length;j++) {
+    			System.out.print(matrix[i][j] + " ");
+    		}
+    		System.out.println();
+    	}
     }
 
     // BFS implementation using a queue
@@ -41,9 +49,30 @@ class Graph2 {
         visited[v] = true;
         q.add(v);
 
-        System.out.print("BFS traversal: ");
+        
+        System.out.print("BFS traversal: " + q.peek() + " -> ");
         while (!q.isEmpty()) {
-
+        	
+        	//노드 방문
+        	//visited[q.peek()] = true;
+        	//방문하지 않았다면
+        	if(!visited[q.peek()])
+        		System.out.print(q.peek() + " -> " );
+        	
+        	//자신과 연결된 노드들 큐로 옮기기
+        	for(int i = 0;i < matrix[0].length;i++) {
+        		//정점이 있다면 추가
+        		if(matrix[q.peek()][i] == 1)
+        		{
+        			
+        			//방문하지 않은 정점만 추가
+        			if(!visited[i])
+        				q.add(i);
+        		}
+        		
+        	}
+        	visited[q.poll()] = true;
+        	
         }
         System.out.println();
     }
@@ -54,13 +83,20 @@ class Graph2 {
         System.out.print("DFS traversal (recursive): ");
         _DFS(v);
         System.out.println();
+        
     }
 
     private void _DFS(int v) {
         visited[v] = true;
-        System.out.print(v + " ");
+        System.out.print(v + "->");
         for (int i = 0; i < n; i++) {
-    
+        	if(matrix[v][i] == 1)
+        		if(!visited[i])//방문하지 않아다면
+        			{
+        				visited[i] = true;
+        					_DFS(i);
+        					
+        			}
         }
     }
 
@@ -77,7 +113,7 @@ class Graph2 {
         System.out.println();
     }
 }
-public class train_실습과제11_2GraphDFSBFS_행렬 {
+public class train_try11_2GraphDFSBFS_Matrix {
     static final int N = 8;
 
     static int[][] makeGraph() {
@@ -104,6 +140,8 @@ public class train_실습과제11_2GraphDFSBFS_행렬 {
     public static void main(String[] args) {
         int[][] matrix = makeGraph();
         showMatrix(matrix);
+        //뭘 선택하라는 걸까?
+        
         Scanner sc = new Scanner(System.in);
         int select;
         int startNode = 0; // Default start node for BFS/DFS

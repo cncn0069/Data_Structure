@@ -1,6 +1,11 @@
 package Chap11_Graph;
 
 class Sets3 {
+	
+	int[] parent;
+	private int n;
+	
+	
 	public Sets3(int sz) {
 		n = sz;
 		parent = new int[n + 1]; // Don't want to use parent[0]
@@ -74,10 +79,7 @@ class Sets3 {
 	public int Getter() {
 		return n;
 	}
-	
-	int[] parent;
-	private int n;
-	
+
 }
 public class train_try11_0SetUnion {
 	static boolean IsCycle(Sets3 s, int i, int j) {
