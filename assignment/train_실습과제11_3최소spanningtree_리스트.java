@@ -114,7 +114,7 @@ public class train_실습과제11_3최소spanningtree_리스트 {
         }
 
         // Arrays.sort()를 사용하여 간선을 가중치 기준으로 정렬
-        
+        // 추가부분
         
         Arrays.sort(listEdges.toArray(),(a,b)-> HEIGHT_ORDER.compare((Edge3)a, (Edge3)b));
 
