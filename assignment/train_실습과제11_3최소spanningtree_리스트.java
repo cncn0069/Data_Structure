@@ -10,17 +10,19 @@ class Edge3 implements Comparable<Edge3> {
     public Edge3() {}
 
     public Edge3(int src, int dest, int weight) {
-
+    	this.src = src;
+    	this.dest = dest;
+    	this.weight = weight;
     }
 
     @Override
     public String toString() {
-
+    	return src + "(" + weight + ")->" + dest;
     }
 
     @Override
     public int compareTo(Edge3 e) {
-
+    	return weight - e.weight;
     }
 }
 
@@ -29,20 +31,28 @@ class Graph_MST {
     LinkedList<Edge3>[] adjacencyList;
 
     public Graph_MST(int n) {
-
+    	
+    	adjacencyList = new LinkedList[n];
+    	
+    	this.n = n;
+    	for(int i = 0; i < n;i++) {
+    		adjacencyList[i] = new LinkedList<>();
+    	}
+    	
     }
 
     public void insertEdge3(int src, int dest, int weight) {
-
+    	
+    	adjacencyList[src].add(new Edge3(src,dest,weight));
+    	
     }
 
     public void displayAdjacencyLists() {
     	for(int i = 0; i < n; i++) {
-    		//adj의 첫 헤드를 가져온후
-    		LinkedList<Edge3> temp = adjacencyList[i];
-    		while(temp!=null) {
-    			System.out.println(temp);
+    		for(Edge3 n : adjacencyList[i]) {
+    			System.out.print(n.toString() +", ");
     		}
+    		System.out.println();
     	}
     }
 }
@@ -55,11 +65,15 @@ class Sets {
     	//아닌가..,? 일단 없애 보자
     	//parent = new int[n+1];
     	parent = new int[n];
+    	
+    	for(int i = 0; i < parent.length;i++) {
+    		parent[i] = -1;
+    	}
     }
 
     public int find(int i) {
     	
-    	if(i<0) return i;
+    	if(parent[i]<0) return i;
     	
     	return parent[i];
     }
@@ -69,11 +83,21 @@ class Sets {
     	int root1 = find(x);
     	int root2 = find(y);
     	
-    	//루트가 같을 때
+    	//루트가 같을 때 싸이클 형성
     	if(root1 == root2) return;
     	//루트가 다를 때
     	
-    	
+    	//크기구나?
+    	//각 루트들은 weight 값을 가지고 있음
+    	//예) -1 -2 -5 -3 등등
+    	int total = parent[root1] + parent[root2];
+    	if(parent[root1] > parent[root2]) {
+    		parent[root1] = root2;
+    		parent[root2] = total;
+    	}else {
+    		parent[root1] = root1;
+    		parent[root2] = total;
+    	}
     			
     }
 }
@@ -84,11 +108,15 @@ public class train_실습과제11_3최소spanningtree_리스트 {
 
         // 모든 간선을 리스트에 추가
         for (int i = 0; i < n; i++) {
- 
+        	for(Edge3 temp : graph.adjacencyList[i]) {
+        		listEdges.add(temp);
+        	}
         }
 
         // Arrays.sort()를 사용하여 간선을 가중치 기준으로 정렬
-
+        // 추가부분
+        
+        Arrays.sort(listEdges.toArray(),(a,b)-> HEIGHT_ORDER.compare((Edge3)a, (Edge3)b));
 
         // Kruskal 알고리즘을 위한 Disjoint Set 초기화
         Sets ds = new Sets(n);
@@ -110,6 +138,7 @@ public class train_실습과제11_3최소spanningtree_리스트 {
     }
 
     static final int N = 7;
+    static final Comparator<Edge3> HEIGHT_ORDER =(a,b) -> a.compareTo(b);
 
     static int[][] makeGraph() {
         return new int[][]{
