@@ -2,7 +2,7 @@ package test;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Stack;
+
 
 public class Jose {
 	
@@ -11,19 +11,20 @@ public class Jose {
 		Queue<Integer> que = new LinkedList<Integer>();
 		
 		
-		for(int i = 0; i < n;i++) {
+		for(int i = 1; i < n;i++) {
 			que.offer(i);
 		}
 		
 		int result = 0;
 
 		
-		while(!que.isEmpty()) {
+		while(que.size() > 1) {
 			for(int i = 0; i < k-1;i++) {
 				que.offer(que.poll());
 			}
 			result = que.poll();
 		}
+		
 		
 		return result;
 	}
@@ -34,7 +35,8 @@ public class Jose {
 		
 		int n = 5;
 		int k = 3;
-		System.out.println(n + "번째 사람중 \n" + k +"번째 사람이 계속 나가면 남는 사람은" + a[jo.solution(n,k)]);
+		int result = jo.solution(n,k);
+		System.out.println(n + "번째 사람중 \n" + k +"번째 사람이 계속 나가면 남는 사람은" + a[(result-1)]);
 		
 	}
 }

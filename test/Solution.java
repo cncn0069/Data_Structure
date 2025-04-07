@@ -1,65 +1,69 @@
 package test;
 
+//거쳐가기
+//이미 지나간길
+//경계를 넘어가면 무시
 import java.util.Map;
 import java.util.HashMap;
 
-//1 -> 2 -> 3 ->1
-//마지막 문자로 시작하는 단어
-//번호 , 차례
 class Solution {
-    public int[] solution(int n, String[] words) {
-        int[] answer = {};
-
-        //몇바퀴 째인지
-        int round = 0;
-        Map<String, Integer> map = new HashMap<String, Integer>();
+    public boolean isSafe(int x, int y){
+        return x >= 0 && x < 11 
+                && y >= 0 && y < 11;
+    }
+    
+    public int solution(String dirs) {
+        int answer = 0;
         
-        for(int i = 0; i < words.length;i++)
-        {
-            
-            
-           
-            //이미 한번 나왔을 때
-            if(map.get(words[i]) != null)
-            {
-                answer = new int[]{round, i%n};
-                return answer;
-            }else{
-                  map.put(words[i],1);
-            }
-          
-            if(i != 0)
-            {
-                char ar = words[i - 1].charAt(words[i - 1].length() - 1);
-                char bf = words[i].charAt(0);
+        Map<Character, Integer> map = new HashMap<>();
+        map.put('R',0);
+        map.put('D',1);
+        map.put('L',2);
+        map.put('U',3);
+        
+        //0 오른쪽 1 아래 2 왼쪽 3 위
+        int[] x = {1,0,-1,0};
+        int[] y = {0,-1,0,1};
+         
+        //좌표 평면 크기
+        boolean [][] visited = new boolean[11][11];
+        
+        //시작 좌표는 5,5
+        visited[5][5] = true;
+        int curX = 5;
+        int curY = 5;
 
-                //앞단어와 뒷단어의 첫글자가 다를 때
-                if(ar != bf)
-                {
-                    answer = new int[]{round, i%n};
-                    return answer;  
-                } 
-            }else{
-                char ar = words[i].charAt(words[i].length() - 1);
-                char bf = words[i+1].charAt(0);
-
-                //앞단어와 뒷단어의 첫글자가 다를 때
-                if(ar != bf)
-                {
-                    answer = new int[]{round, i%n};
-                    return answer;  
-                } 
-            }
+        int count = 0;
+        
+        int moveX = 0;
+        int moveY = 0;
+        
+        for(int i = 0; i < dirs.length();i++){
+            //방문하지 않았다면
+            moveX = curX + x[map.get(dirs.charAt(i))];
+            moveY = curY + y[map.get(dirs.charAt(i))];
             
+            //갈 수 있는지 체크
+            if(isSafe(moveX, moveY)){
+                //방문 안했으면
+                if(!visited[moveX][moveY]){
+                    count++;
+                    visited[moveX][moveY] = true;
+                }
+                
+                curX = moveX;
+                curY = moveY;
+            }
         }
-        answer = new int[]{0,0};
+        answer = count;
         return answer;
     }
+
     
     public static void main(String[] args) {
 		Solution te = new Solution();
 		
-		int [] test = te.solution(3, new String[]{"tank", "kick", "know", "wheel", "land", "dream", "mother", "robot", "tank"});
-		System.out.println(test[0] + " "+ test[1]);
+		int test = te.solution("ULURRDLLU");
+		System.out.println(test);
 	}
 }
